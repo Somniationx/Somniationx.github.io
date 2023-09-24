@@ -1,0 +1,508 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>『Linux』初识进程 | Somniationx</title><meta name="author" content="Somniationx"><meta name="copyright" content="Somniationx"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="初识进程概念 进程是计算机科学中的重要概念，用于描述正在运行的程序的基本单位。它是操作系统管理和分配系统资源的基本单元，包括CPU时间、内存空间和输入&#x2F;输出设备等。 当你使用计算机时，你可以将进程想象成是计算机上运行的不同任务或程序的容器。每个进程都有自己的空间，它包含了程序代码、数据和其他必要的信息。  1.程序和进程的区别 程序是一个静态的文件或指令集，而进程是程序在执行时的动态实例。一个程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="『Linux』初识进程">
+<meta property="og:url" content="https://somniationx-github-io.vercel.app/2023/09/24/%E3%80%8ELinux%E3%80%8F%E5%88%9D%E8%AF%86%E8%BF%9B%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Somniationx">
+<meta property="og:description" content="初识进程概念 进程是计算机科学中的重要概念，用于描述正在运行的程序的基本单位。它是操作系统管理和分配系统资源的基本单元，包括CPU时间、内存空间和输入&#x2F;输出设备等。 当你使用计算机时，你可以将进程想象成是计算机上运行的不同任务或程序的容器。每个进程都有自己的空间，它包含了程序代码、数据和其他必要的信息。  1.程序和进程的区别 程序是一个静态的文件或指令集，而进程是程序在执行时的动态实例。一个程序">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://image-somn.oss-cn-beijing.aliyuncs.com/6.png">
+<meta property="article:published_time" content="2023-09-24T12:45:00.000Z">
+<meta property="article:modified_time" content="2023-09-24T12:45:00.000Z">
+<meta property="article:author" content="Somniationx">
+<meta property="article:tag" content="后端开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image-somn.oss-cn-beijing.aliyuncs.com/6.png"><link rel="shortcut icon" href="https://image-somn.oss-cn-beijing.aliyuncs.com/%E7%85%8E%E8%9B%8B.png"><link rel="canonical" href="https://somniationx-github-io.vercel.app/2023/09/24/%E3%80%8ELinux%E3%80%8F%E5%88%9D%E8%AF%86%E8%BF%9B%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '『Linux』初识进程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-24 20:45:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_2264842_b004iy0kk2b.css" media="defer" onload="this.media='all'"><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+document.addEventListener('pjax:send', () => {
+  Pace.restart()
+})
+</script><link rel="stylesheet" href="/css/progress_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://image-somn.oss-cn-beijing.aliyuncs.com/10.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope-open"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://image-somn.oss-cn-beijing.aliyuncs.com/6.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Somniationx"><span class="site-name">Somniationx</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><!-- span=' '+_p('search.title')--></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope-open"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">『Linux』初识进程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-09-24T12:45:00.000Z" title="Created 2023-09-24 20:45:00">2023-09-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-09-24T12:45:00.000Z" title="Updated 2023-09-24 20:45:00">2023-09-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">3.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>9min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="『Linux』初识进程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="初识进程概念"><a href="#初识进程概念" class="headerlink" title="初识进程概念"></a>初识进程概念</h1><blockquote>
+<p>进程是计算机科学中的重要概念，用于描述正在运行的程序的基本单位。它是操作系统管理和分配系统资源的基本单元，包括CPU时间、内存空间和输入/输出设备等。</p>
+<p>当你使用计算机时，你可以将进程想象成是计算机上运行的不同任务或程序的容器。每个进程都有自己的空间，它包含了程序代码、数据和其他必要的信息。</p>
+</blockquote>
+<p>1.<strong>程序和进程的区别</strong></p>
+<p>程序是一个静态的文件或指令集，而进程是程序在执行时的动态实例。一个程序可以对应多个进程的实例。</p>
+<p>2.<strong>进程是程序的执行实例</strong></p>
+<p>想象计算机上运行的程序就像是你电脑里的应用程序，如浏览器或文字处理软件。进程则是这些应用程序的实际运行实例。每次你打开一个应用程序，就会创建一个新的进程。</p>
+<p>3.<strong>进程有自己的空间</strong></p>
+<p>每个进程都有自己独立的内存空间，这意味着一个进程无法直接访问其他进程的数据。这是为了保护你的数据隐私和确保程序之间不会相互干扰。</p>
+<p>4.<strong>进程的特征</strong></p>
+<ul>
+<li><strong>独立性</strong>：每个进程都是相互独立的，一个进程的崩溃不会影响其他进程。</li>
+<li><strong>拥有资源</strong>：每个进程有自己的内存空间、寄存器和文件描述符等资源。</li>
+<li><strong>并发性</strong>：多个进程可以同时运行，操作系统通过时间片轮转等方式来实现并发执行。</li>
+</ul>
+<p>5.<strong>进程控制块（PCB）</strong></p>
+<p>每个进程都有一个与之相关联的数据结构，称为进程控制块。<strong>PCB</strong> 包含了有关进程的所有信息，如进程状态、程序计数器、寄存器值、内存分配情况、打开文件列表等。</p>
+<p>6.<strong>进程间通信（IPC）</strong></p>
+<p>不同进程之间需要进行数据交换和通信的情况下，可以使用 <strong>IPC</strong> 机制，如管道、消息队列、共享内存等。</p>
+<blockquote>
+<p>总之，进程是操作系统中的基本执行单位，它允许多个程序同时运行，并提供了一种有效管理和控制计算机资源的方式，以满足各种应用程序的需求。进程的概念对于理解操作系统和并发编程非常重要。</p>
+</blockquote>
+<h1 id="PCB（Process-Control-Block）"><a href="#PCB（Process-Control-Block）" class="headerlink" title="PCB（Process Control Block）"></a>PCB（Process Control Block）</h1><h2 id="通用-PCB"><a href="#通用-PCB" class="headerlink" title="通用 PCB"></a><strong>通用 PCB</strong></h2><blockquote>
+<p>PCB（Process Control Block，进程控制块）是操作系统中用于管理和维护进程信息的数据结构。每个进程在操作系统中都有一个相关联的 PCB，PCB 包含了有关进程的重要信息，以便操作系统能够对其进行管理和控制。</p>
+</blockquote>
+<p>以下是 PCB 中可能包含的信息和属性：</p>
+<ol>
+<li><strong>进程状态（Process State）</strong>：PCB 记录了进程的当前状态，例如就绪（Ready）、运行（Running）、阻塞（Blocked）或终止（Terminated）等。</li>
+<li><strong>程序计数器（Program Counter）</strong>：也称为指令指针，它包含了进程当前执行的指令位置。当操作系统切换进程时，它会保存和恢复程序计数器的值，以确保进程继续执行。</li>
+<li><strong>寄存器状态（Register State）</strong>：PCB 记录了进程在CPU中的寄存器内容。这包括通用寄存器、堆栈指针和程序状态寄存器等。这些寄存器的值在进程切换时被保存和恢复。</li>
+<li><strong>进程优先级和调度信息</strong>：PCB 可能包含进程的优先级和调度信息，以帮助操作系统在多个进程之间进行调度和分配 CPU 时间。</li>
+<li><strong>进程标识符（Process Identifier）</strong>：每个进程都有一个唯一的标识符，通常是一个整数，用于在操作系统中标识和查找进程。</li>
+<li><strong>进程的父子关系信息</strong>：PCB 可能包含有关进程的父进程和子进程的信息，以便进行进程间通信和管理。</li>
+<li><strong>内存管理信息</strong>：PCB 可能包含有关进程内存分配和使用的信息，包括进程的地址空间大小、页表信息等。</li>
+<li><strong>文件描述符表（File Descriptor Table）</strong>：进程通常会打开文件或网络连接，PCB 可能包含有关这些打开文件的信息，以便在进程之间共享文件或进行文件操作。</li>
+<li><strong>进程统计信息</strong>：一些操作系统可能记录进程的运行时间、CPU 使用情况和其他性能统计信息。</li>
+</ol>
+<blockquote>
+<p>PCB 是操作系统内核的一部分，它们用于跟踪和管理系统中运行的所有进程。当操作系统需要切换到另一个进程时，它会保存当前进程的 PCB 信息，加载下一个进程的 PCB，然后继续执行。这种方式实现了多任务处理和进程的并发执行。 PCB信息的细节和结构可能因操作系统的不同而有所不同，但通常包含上述核心信息以及其他操作系统特定的信息。</p>
+</blockquote>
+<h2 id="Linux-内核中的-task-struct"><a href="#Linux-内核中的-task-struct" class="headerlink" title="Linux 内核中的 task_struct"></a><strong>Linux 内核中的 <code>task_struct</code></strong></h2><blockquote>
+<p><code>task_struct</code> 是一个特定于 Linux 内核的数据结构，用于表示和管理进程（任务）的详细信息。它是 Linux 内核中非常重要的数据结构之一，包含了关于一个进程的所有关键信息，类似于其他操作系统中的 PCB（Process Control Block）。</p>
+</blockquote>
+<ol>
+<li><strong>进程标识符（Process Identifier）</strong>：<ul>
+<li>每个进程都有一个唯一的标识符，通常是一个整数，用于操作系统区分不同的进程。</li>
+</ul>
+</li>
+<li><strong>程序计数器（Program Counter，PC）</strong>：<ul>
+<li>PC 存储了进程下一条将要执行的指令的地址。当进程被切换时，PC 的值会被保存和恢复，以确保进程在恢复执行时从正确的位置开始。</li>
+</ul>
+</li>
+<li><strong>寄存器集合（Registers）</strong>：<ul>
+<li>PCB 包含了进程在CPU中的寄存器的值，包括通用寄存器、堆栈指针寄存器、程序状态寄存器等。这些寄存器的值在进程切换时需要保存和恢复。</li>
+</ul>
+</li>
+<li><strong>进程状态（Process State）</strong>：<ul>
+<li>PCB 记录了进程的状态，如就绪、运行、阻塞等。这有助于操作系统了解哪些进程可以运行，哪些需要等待或被阻塞。</li>
+</ul>
+</li>
+<li><strong>进程优先级和调度信息</strong>：<ul>
+<li>PCB 可能包含有关进程优先级的信息，以及操作系统用于调度进程的信息，例如时间片大小或调度策略。</li>
+</ul>
+</li>
+<li><strong>进程的父子关系信息</strong>：<ul>
+<li>进程通常可以创建其他进程，PCB 中可能包含有关父子进程关系的信息，以便操作系统跟踪和管理这些关系。</li>
+</ul>
+</li>
+<li><strong>内存管理信息</strong>：<ul>
+<li>PCB 包含了有关进程的内存分配和使用情况的信息，包括地址空间大小、页表信息等。</li>
+</ul>
+</li>
+<li><strong>文件描述符表（File Descriptor Table）</strong>：<ul>
+<li>进程可以打开文件或网络连接，PCB 包含了有关这些打开文件的信息，以便进程能够访问它们，也用于文件共享和管理。</li>
+</ul>
+</li>
+<li><strong>进程统计信息</strong>：<ul>
+<li>一些操作系统记录有关进程的性能统计信息，如运行时间、CPU 使用情况、内存使用情况等。</li>
+</ul>
+</li>
+<li><strong>其他操作系统特定的信息</strong>：<ul>
+<li>不同的操作系统可能在 PCB 中包含其他特定于操作系统的信息，以满足特定的需求。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>请注意，<code>task_struct</code> 结构在不同版本的 Linux 内核中可能会有所不同，并且具体字段和细节可能会因内核版本而异。这个数据结构是内核的核心部分，用于管理和控制进程。不同的字段和成员用于支持各种进程管理和调度操作。</p>
+</blockquote>
+<h2 id="PCB产生原因"><a href="#PCB产生原因" class="headerlink" title="PCB产生原因"></a>PCB产生原因</h2><blockquote>
+<p>进程控制块（PCB，Process Control Block）在操作系统中具有关键作用，以下是更详细的解释为什么需要 PCB：</p>
+</blockquote>
+<ol>
+<li><strong>多任务处理</strong>：现代操作系统需要同时管理多个进程或任务。PCB 允许操作系统在这些进程之间进行切换，以实现并发执行。当一个进程在等待外部事件（如输入/输出完成）或时间片耗尽时，操作系统会保存当前进程的状态（使用 PCB）并切换到另一个进程，从而实现进程间的快速切换和并发执行。</li>
+<li><strong>进程状态跟踪</strong>：PCB 包含了关于进程的各种信息，如进程的标识符、状态、寄存器值、程序计数器（PC）等。这些信息允许操作系统了解每个进程的当前状态以及何时需要进行进程调度。</li>
+<li><strong>进程隔离</strong>：每个进程都有自己的地址空间，这意味着它们无法直接访问其他进程的内存。PCB 有助于维护这种隔离，确保一个进程的错误或崩溃不会对其他进程造成影响。</li>
+<li><strong>资源管理</strong>：PCB 包含了进程所拥有的资源信息，如打开的文件、分配的内存等。操作系统可以使用这些信息来协调进程对资源的访问，以确保资源的合理共享和分配。</li>
+<li><strong>进程调度</strong>：PCB 中的信息包括进程的优先级和调度信息。这允许操作系统使用不同的调度算法来决定哪个进程获得 CPU 时间片，以实现各种调度策略，如轮转调度、优先级调度等。</li>
+<li><strong>进程同步和通信</strong>：PCB 包含了进程间通信（IPC）所需的信息。这可以用于实现进程之间的消息传递、共享内存等机制，以便进程可以相互协作和通信。</li>
+<li><strong>进程终止和资源释放</strong>：当一个进程终止时，PCB 中包含的信息用于释放该进程占用的资源，包括内存、打开的文件描述符等，以确保资源得到有效回收。</li>
+</ol>
+<blockquote>
+<p>总之，PCB 是操作系统中的关键数据结构，用于管理和控制进程。它允许操作系统有效地管理多个并发运行的进程，确保它们能够有序地访问计算机资源，维护进程的隔离性，实现多任务处理和资源管理，以提供高性能、稳定性和安全性的操作系统环境。没有 PCB，现代操作系统无法有效地实现多任务处理和进程管理。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><strong>通用 PCB（Process Control Block）</strong>：<ul>
+<li><strong>概念</strong>：通用 PCB 是操作系统中用于管理进程的核心数据结构之一。它负责存储和维护有关进程的所有信息，以便操作系统能够对进程进行管理和控制。</li>
+<li><strong>内容</strong>：通用 PCB 包含了各种关于进程的信息，包括但不限于：<ul>
+<li>进程标识符（PID）：唯一标识每个进程的数字。</li>
+<li>程序计数器（Program Counter，PC）：保存下一条要执行的指令的地址。</li>
+<li>寄存器状态：包括通用寄存器、堆栈指针、程序状态寄存器等。</li>
+<li>进程状态：记录进程的状态，如就绪、运行、阻塞等。</li>
+<li>进程优先级和调度信息：包括进程的优先级和调度策略。</li>
+<li>父子进程关系：指向父进程或子进程的指针。</li>
+<li>内存管理信息：包括地址空间大小、页表等。</li>
+<li>文件描述符表：用于管理打开的文件和网络连接。</li>
+<li>进程统计信息：如 CPU 时间、启动时间等。</li>
+</ul>
+</li>
+<li><strong>用途</strong>：通用 PCB 的主要目的是支持多任务操作系统。当操作系统需要切换到另一个进程时，它会保存当前进程的 PCB 信息，加载下一个进程的 PCB，以便继续执行。通用 PCB 用于实现进程的并发和管理。</li>
+</ul>
+</li>
+<li><strong>Linux 内核中的 <code>task_struct</code></strong>：<ul>
+<li><strong>概念</strong>：<code>task_struct</code> 是 Linux 内核中用于表示和管理进程的具体数据结构。它是 Linux 特有的 PCB 实现，包含了详细的信息。</li>
+<li><strong>内容</strong>：<code>task_struct</code> 结构包含了大量关于进程的信息，包括通用 PCB 中的内容以及 Linux 特定的字段，如进程命名空间、信号处理器、调度信息等。具体字段和成员可能因内核版本而异。</li>
+<li><strong>用途</strong>：<code>task_struct</code> 用于管理和控制 Linux 内核中运行的进程。当操作系统需要进行进程调度或切换到不同的进程时，它会使用 <code>task_struct</code> 结构来保存和恢复进程的状态和信息。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>总结：通用 PCB 是一个操作系统概念，用于表示和管理进程的基本信息，而 <code>task_struct</code> 是 Linux 内核中的具体实现，包含了更多详细信息以支持 Linux 特定的功能和调度策略。这两种 PCB 都是操作系统中非常重要的数据结构，用于支持多任务处理和进程管理。在不同的操作系统中，通用 PCB 的实现方式可能不同，而 <code>task_struct</code> 是 Linux 内核的一部分。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://somniationx-github-io.vercel.app">Somniationx</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://somniationx-github-io.vercel.app/2023/09/24/%E3%80%8ELinux%E3%80%8F%E5%88%9D%E8%AF%86%E8%BF%9B%E7%A8%8B/">https://somniationx-github-io.vercel.app/2023/09/24/『Linux』初识进程/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">此文章版权归Somniationx所有，如有转载，请註明来自原作者</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://image-somn.oss-cn-beijing.aliyuncs.com/6.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/09/22/%E3%80%8ELinux%E3%80%8F%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" title="『Linux』冯诺依曼体系结构"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://image-somn.oss-cn-beijing.aliyuncs.com/8.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">『Linux』冯诺依曼体系结构</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://image-somn.oss-cn-beijing.aliyuncs.com/10.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Somniationx</div><div class="author-info__description">后端开发学习历程</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Somniationx"><i></i><span>🛴前往小家...</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Somniationx" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:629701713@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><center>主域名：<br><a target="_blank" rel="noopener" href="https://www.somniationx.cc"><b><font color="#5ea6e5">somniationx.cc</font></b></a>&nbsp;</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E8%AF%86%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">初识进程概念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PCB%EF%BC%88Process-Control-Block%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">PCB（Process Control Block）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8-PCB"><span class="toc-number">2.1.</span> <span class="toc-text">通用 PCB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84-task-struct"><span class="toc-number">2.2.</span> <span class="toc-text">Linux 内核中的 task_struct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PCB%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.3.</span> <span class="toc-text">PCB产生原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By Somniationx</div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><a class="icon-V hidden" onclick="switchNightMode()" title="Switch Between Light And Dark Mode"><svg width="25" height="25" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="#icon-moon"></use></svg></a><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"></div><script defer src="/js/light.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script async src="/js/title.js"></script><canvas id="snow"></canvas><script async src="/js/snow.js"></script><script async src="//at.alicdn.com/t/font_2264842_b004iy0kk2b.js"></script><script src="/js/sun_moon.js" async></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="https://somniationx-github-io.vercel.app/categories/C语言初阶/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 C语言初阶 (4)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://somniationx-github-io.vercel.app/categories/Cpp/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 Cpp (2)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://somniationx-github-io.vercel.app/categories/Linux/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 Linux (2)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="https://somniationx-github-io.vercel.app/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #f2f2f2;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #b30070}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var qweather_key = 'b16a1fa0e63c46a4b8f28abfb06ae3fe';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '113.34532,23.15624';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;2023/09/18/『C语言入门』数组详解/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://image-somn.oss-cn-beijing.aliyuncs.com/6.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-09-18</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;2023/09/18/『C语言入门』数组详解/&quot;);" href="javascript:void(0);" alt="">『C语言入门』数组详解</a><div class="blog-slider__text">探索数组世界</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;2023/09/18/『C语言入门』数组详解/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;2023/09/18/『C语言入门』探索C语言函数/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://image-somn.oss-cn-beijing.aliyuncs.com/6.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-09-18</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;2023/09/18/『C语言入门』探索C语言函数/&quot;);" href="javascript:void(0);" alt="">『C语言入门』探索C语言函数</a><div class="blog-slider__text">剖析函数奥秘</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;2023/09/18/『C语言入门』探索C语言函数/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;2023/09/18/『STL』string详解/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://image-somn.oss-cn-beijing.aliyuncs.com/3.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-09-18</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;2023/09/18/『STL』string详解/&quot;);" href="javascript:void(0);" alt="">『STL』string详解</a><div class="blog-slider__text">详细解析官网string各类函数接口</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;2023/09/18/『STL』string详解/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;2023/09/22/『Linux』冯诺依曼体系结构/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://image-somn.oss-cn-beijing.aliyuncs.com/8.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-09-22</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;2023/09/22/『Linux』冯诺依曼体系结构/&quot;);" href="javascript:void(0);" alt="">『Linux』冯诺依曼体系结构</a><div class="blog-slider__text">解析计算机体系结构</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;2023/09/22/『Linux』冯诺依曼体系结构/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__bounceInLeft');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__bounceInRight');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('pagination');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 280px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/about/'|| '/about/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("https://gitcalendar.fomal.cc/api?Somniationx",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'Somniationx')
+    }
+  </script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body></html>
